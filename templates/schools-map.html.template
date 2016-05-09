@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Google Map - BlueSoxx Recruits' Schools Locations </title>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
+<script type="text/javascript">
+  function initialize() {
+
+    // STARTHERE Code for initializing map.
+    var centerlatlng = new google.maps.LatLng(49.263886, -123.112297);
+    var myOptions = {
+      zoom: 12,
+      center: centerlatlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    // Code for writing out school markers and their info windows.
+    {% for school in schools %}
+      var ll = new google.maps.LatLng({{ school.coords.lat }}, {{ school.coords.lng }});
+      var marker{{loop.index}} = new google.maps.Marker({
+        title: "School: {{ school.name }}.",
+        map: map,
+        animation: google.maps.Animation.DROP,
+        position: ll
+      });
+      var infowindow{{loop.index}} = new google.maps.InfoWindow({
+        content:
+        '<h3>Bluesock Recruit, {{ school.name }}</h3>' +
+        '<ul>' +
+          '<li><b>Transit Distance</b>:&nbsp;&nbsp;{{ school.transitDistance }}</li>' +
+          '<li><b>Transit Time</b>:&nbsp;&nbsp;{{ school.transitTime }}</li>' +
+          '<li><b>Driving Distance</b>:&nbsp;&nbsp;{{ school.drivingDistance }}</li>' +
+          '<li><b>Driving Time</b>:&nbsp;&nbsp;{{ school.drivingTime }}</li>' +
+        '</ul>' +
+        '<p>Calculated for 3:10pm weekday departure.</p>'
+      });
+      marker{{loop.index}}.addListener('click', function() {
+        infowindow{{loop.index}}.open(map, marker{{loop.index}});
+      });
+
+    {% endfor %}
+
+    // Code for plotting Bluesoxx HQ
+    var ll = new google.maps.LatLng(49.2638865,-123.1122975);
+
+    // FIXTHIS TODO STARTHERE Host the image.
+    //var img = new google.maps.MarkerImage('http://www.bluesoxx.com/img/bsx-medallion.png');
+    var img = new google.maps.MarkerImage('./templates/bsx-medallion-48x48.png');
+    var markerBsx = new google.maps.Marker({
+      title: "Suite Genius",
+      icon: img,
+      map: map,
+      position: ll
+    });
+    var infowindowBsx = new google.maps.InfoWindow({
+      content:
+      '<h3>BlueSoxx Meeting Point</h3>' +
+      '<p><a href="https://suite-genius.com/mt-pleasant/" target="_blank">Suite Genius</a>,' +
+          ' 3rd Floor</p>' +
+      '<p>225 West 8th Ave</p>' +
+      '<p>Vancouver, BC V5Y 1N3</p>'
+    });
+    markerBsx.addListener('click', function() {
+      infowindowBsx.open(map, markerBsx);
+    });
+
+
+  };      
+</script>
+</head>
+<body style="margin:0px; padding:0px;" onload="initialize()">
+  <div id="map_canvas" style="width: 100%; height: 100%;"></div>
+</body>
+</html>
