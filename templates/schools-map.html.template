@@ -7,7 +7,7 @@
 <script type="text/javascript">
   function initialize() {
 
-    // STARTHERE Code for initializing map.
+    // Initializing map.
     var centerlatlng = new google.maps.LatLng(49.263886, -123.112297);
     var myOptions = {
       zoom: 12,
@@ -16,7 +16,7 @@
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-    // Code for writing out school markers and their info windows.
+    // Writing out school markers and their info windows.
     {% for school in schools %}
       var ll = new google.maps.LatLng({{ school.coords.lat }}, {{ school.coords.lng }});
       var marker{{loop.index}} = new google.maps.Marker({
@@ -27,7 +27,7 @@
       });
       var infowindow{{loop.index}} = new google.maps.InfoWindow({
         content:
-        '<h3>Bluesock Recruit, {{ school.name }}</h3>' +
+        '<h3>Bluesock Recruit:<span style = "display: block;">{{ school.name }}</span></h3>' +
         '<ul>' +
           '<li><b>Transit Distance</b>:&nbsp;&nbsp;{{ school.transitDistance }}</li>' +
           '<li><b>Transit Time</b>:&nbsp;&nbsp;{{ school.transitTime }}</li>' +
@@ -44,10 +44,7 @@
 
     // Code for plotting Bluesoxx HQ
     var ll = new google.maps.LatLng(49.2638865,-123.1122975);
-
-    // FIXTHIS TODO STARTHERE Host the image.
-    //var img = new google.maps.MarkerImage('http://www.bluesoxx.com/img/bsx-medallion.png');
-    var img = new google.maps.MarkerImage('./templates/bsx-medallion-48x48.png');
+    var img = new google.maps.MarkerImage('http://www.bluesoxx.com/graphics/bsx-medallion-marker.png');
     var markerBsx = new google.maps.Marker({
       title: "Suite Genius",
       icon: img,
@@ -65,7 +62,6 @@
     markerBsx.addListener('click', function() {
       infowindowBsx.open(map, markerBsx);
     });
-
 
   };      
 </script>

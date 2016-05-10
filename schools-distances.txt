@@ -1,0 +1,63 @@
+# Travel from schools to Suite Genius, at 3:10pm on a weekday.
+# Distances in kilometers, times in minutes.
+School:                  Argyle Secondary
+Transit/Drive Time:      82 / 25
+Transit/Drive Distance:  17.8 / 16.9
+
+School:                  South Hill Education Centre
+Transit/Drive Time:      31 / 10
+Transit/Drive Distance:  4.7 / 4.7
+
+School:                  Kitsilano Secondary School
+Transit/Drive Time:      31 / 11
+Transit/Drive Distance:  5.3 / 4.7
+
+School:                  Eric Hamber Secondary School
+Transit/Drive Time:      24 / 7
+Transit/Drive Distance:  3.2 / 3.0
+
+School:                  Saint Patrick Regional Secondary School
+Transit/Drive Time:      9 / 2
+Transit/Drive Distance:  0.7 / 0.7
+
+School:                  Lord Byng Secondary
+Transit/Drive Time:      33 / 14
+Transit/Drive Distance:  6.8 / 6.6
+
+School:                  David Thompson Secondary School
+Transit/Drive Time:      45 / 14
+Transit/Drive Distance:  8.4 / 6.9
+
+School:                  Gladstone Secondary School
+Transit/Drive Time:      32 / 9
+Transit/Drive Distance:  7.5 / 4.6
+
+School:                  York House School
+Transit/Drive Time:      28 / 8
+Transit/Drive Distance:  3.9 / 3.5
+
+School:                  West Point Grey Academy
+Transit/Drive Time:      43 / 15
+Transit/Drive Distance:  8.1 / 7.5
+
+School:                  Lord Byng Secondary
+Transit/Drive Time:      33 / 14
+Transit/Drive Distance:  6.8 / 6.6
+
+School:                  Moscrop Secondary School
+Transit/Drive Time:      49 / 18
+Transit/Drive Distance:  13.4 / 8.7
+
+School:                  St. John\'s School
+Transit/Drive Time:      27 / 10
+Transit/Drive Distance:  4.1 / 4.1
+
+School:                  Brockton School
+Transit/Drive Time:      76 / 28
+Transit/Drive Distance:  17.0 / 17.9
+
+Transit Time Min/Max/Avg:  9 / 82 / 38.0
+Drive Time Min/Max/Avg:    2 / 28 / 13.0
+
+Transit Distance Min/Max/Avg:  0.7 / 17.8 / 7.7
+Drive Distance Min/Max/Avg:    0.7 / 17.9 / 6.9
