@@ -31,7 +31,7 @@ with open(apiKeyFilename) as f:
 with open(schoolsFilename) as f:
   schoolNames = f.read().splitlines()
 
-print "Read " + str(len(schoolNames)) + " school names."
+print "Read " + str(len(schoolNames)) + " school names; processing..."
 
 schools = []
 
@@ -39,11 +39,14 @@ schools = []
 for schoolName in schoolNames:
 
   # Special cases and default query.
-  # STARTHERE Add 'Hastings Sunrise' to schools file and to code here.
   if (schoolName == 'South Hill Education Centre'):
     geoResp = gmaps.places_nearby(searchCenter,
                                radius=searchRadiusM,
                                name=schoolName)
+  elif (schoolName == 'Hastings Sunrise Area'):
+    geoResp = gmaps.places_nearby(searchCenter,
+                                  radius=searchRadiusM,
+                                  name="PNE Forum")
   else:
     geoResp = gmaps.places_nearby(searchCenter, keyword='school',
                                radius=searchRadiusM,
@@ -142,5 +145,6 @@ with open('schools-distances.txt', 'w') as f:
   f.write("Transit Distance Min/Max/Avg:  " + summaryStr(transDists) + "\n")
   f.write("Drive Distance Min/Max/Avg:    " + summaryStr(driveDists) + "\n")
 
-
+print "Done."
+print "Wrote 'schools-map.html' and 'school-distances.txt'."
 

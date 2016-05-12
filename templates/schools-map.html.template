@@ -20,7 +20,7 @@
     {% for school in schools %}
       var ll = new google.maps.LatLng({{ school.coords.lat }}, {{ school.coords.lng }});
       var marker{{loop.index}} = new google.maps.Marker({
-        title: "School: {{ school.name }}.",
+        title: "{{ school.name }}",
         map: map,
         animation: google.maps.Animation.DROP,
         position: ll

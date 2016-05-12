@@ -52,12 +52,12 @@ School:                  St. John\'s School
 Transit/Drive Time:      27 / 10
 Transit/Drive Distance:  4.1 / 4.1
 
-School:                  Brockton School
-Transit/Drive Time:      76 / 28
-Transit/Drive Distance:  17.0 / 17.9
+School:                  PNE Forum
+Transit/Drive Time:      42 / 16
+Transit/Drive Distance:  7.9 / 7.4
 
-Transit Time Min/Max/Avg:  9 / 82 / 38.0
-Drive Time Min/Max/Avg:    2 / 28 / 13.0
+Transit Time Min/Max/Avg:  9 / 82 / 36.0
+Drive Time Min/Max/Avg:    2 / 25 / 12.0
 
-Transit Distance Min/Max/Avg:  0.7 / 17.8 / 7.7
-Drive Distance Min/Max/Avg:    0.7 / 17.9 / 6.9
+Transit Distance Min/Max/Avg:  0.7 / 17.8 / 7.0
+Drive Distance Min/Max/Avg:    0.7 / 16.9 / 6.1
