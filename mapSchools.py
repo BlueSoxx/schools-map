@@ -15,7 +15,7 @@ from pprint import pprint
 # Configuration.
 schoolsFilename = 'schools.txt'
 apiKeyFilename = '/bsx/keys/google-eihsu.bsx-1.txt'
-searchCenter = (49.2638865,-123.1122975)  # Suite Genius
+searchCenter = (49.263921,-123.110107)  # Suite Genius
 searchRadiusM = 50000  # Maximum Value
 mapCenter = searchCenter
 mapZoom = 12
