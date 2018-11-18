@@ -1,16 +1,31 @@
+<!DOCTYPE html>
 <html>
 <head>
+<title>Google Map - BlueSoxx Members' Schools Locations </title>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-<title>Google Map - BlueSoxx Recruits' Schools Locations </title>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
+<meta charset="utf-8"/>
+<style>
+  /* Always set the map height explicitly to define the size of the div
+  * element that contains the map. */
+  #map {
+  height: 100%;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  }
+</style>
+</head>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=visualization&sensor=true_or_false"></script>
 <script type="text/javascript">
   function initialize() {
 
     // STARTHERE Code for initializing map.
-    var centerlatlng = new google.maps.LatLng(49.263886, -123.112297);
+    var centerlatlng = new google.maps.LatLng(49.278151, -123.126391);
     var myOptions = {
-      zoom: 12,
+      zoom: 11,
       center: centerlatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -27,7 +42,8 @@
       });
       var infowindow{{loop.index}} = new google.maps.InfoWindow({
         content:
-        '<h3>Bluesock Recruit, {{ school.name }}</h3>' +
+        '<h3>Bluesoxx Member</h3>' +
+        '<h3>{{ school.name }}</h3>' +
         '<ul>' +
           '<li><b>Transit Distance</b>:&nbsp;&nbsp;{{ school.transitDistance }}</li>' +
           '<li><b>Transit Time</b>:&nbsp;&nbsp;{{ school.transitTime }}</li>' +
@@ -43,13 +59,13 @@
     {% endfor %}
 
     // Code for plotting Bluesoxx HQ
-    var ll = new google.maps.LatLng(49.2638865,-123.1122975);
+    var ll = new google.maps.LatLng(49.278151, -123.126391);
 
     // FIXTHIS TODO STARTHERE Host the image.
     //var img = new google.maps.MarkerImage('http://www.bluesoxx.com/img/bsx-medallion.png');
     var img = new google.maps.MarkerImage('./templates/bsx-medallion-48x48.png');
     var markerBsx = new google.maps.Marker({
-      title: "Suite Genius",
+      title: "Mangos Lounge",
       icon: img,
       map: map,
       position: ll
@@ -57,10 +73,9 @@
     var infowindowBsx = new google.maps.InfoWindow({
       content:
       '<h3>BlueSoxx Meeting Point</h3>' +
-      '<p><a href="https://suite-genius.com/mt-pleasant/" target="_blank">Suite Genius</a>,' +
-          ' 3rd Floor</p>' +
-      '<p>225 West 8th Ave</p>' +
-      '<p>Vancouver, BC V5Y 1N3</p>'
+      '<p><a href="http://luxloungevancouver.com/" target="_blank">Mangos Lounge</a>,' +
+       '<p>1180 Howe Street</p>' +
+      '<p>Vancouver, BC</p>'
     });
     markerBsx.addListener('click', function() {
       infowindowBsx.open(map, markerBsx);

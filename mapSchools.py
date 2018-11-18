@@ -5,22 +5,21 @@
 #
 # Reads text file containing the name of a Vancouver secondary school
 # on each line.  Plots the schools on a Google map.
-
+import sys
 import googlemaps
-import gmplot
 import os
 from jinja2 import Environment, FileSystemLoader
 from pprint import pprint
 
 # Configuration.
 schoolsFilename = 'schools.txt'
-apiKeyFilename = '/bsx/keys/google-eihsu.bsx-1.txt'
-searchCenter = (49.2638865,-123.1122975)  # Suite Genius
+apiKeyFilename = '/bsx/keys/google-eihsu.bsx-2018.txt'
+searchCenter = (49.278474, -123.126393)  # Mangos
 searchRadiusM = 50000  # Maximum Value
 mapCenter = searchCenter
 mapZoom = 12
 mapEdgeWidth = 10
-departureEpochTime = 1464127800 # 24 May 2016, 3:10pm in Vancouver
+departureEpochTime = 1547161800  # 10 JAN 2019, 3:10pm in Vancouver
 
 # Read license key for google maps.
 with open(apiKeyFilename) as f:
@@ -31,19 +30,15 @@ with open(apiKeyFilename) as f:
 with open(schoolsFilename) as f:
   schoolNames = f.read().splitlines()
 
-# FIXTHIS
-schoolNames = schoolNames[0:4]
-
-print "Read " + str(len(schoolNames)) + " school names."
-
 schools = []
 
 # Search for schools under Google Maps API.
 for schoolName in schoolNames:
-  if (schoolName == 'South Hill Education Centre'):
+  print "Processing {}".format(schoolName)
+  if (schoolName == 'King George Secondary School'):
     geoResp = gmaps.places_nearby(searchCenter,
-                               radius=searchRadiusM,
-                               name=schoolName)
+                                  radius=searchRadiusM,
+                                  name="King George Secondary School Tennis Courts")
   else:
     geoResp = gmaps.places_nearby(searchCenter, keyword='school',
                                radius=searchRadiusM,
@@ -59,7 +54,7 @@ for schoolName in schoolNames:
 
     # Transit distance/time.
     transResp = gmaps.directions(res['name'] + ', Vancouver BC Canada',
-                                 'Suite Genius Mt. Pleasant, Vancouver BC Canada',
+                                 'Mangos Lounge, Vancouver BC Canada',
                                  mode='transit',
                                  traffic_model='best_guess',
                                  departure_time=departureEpochTime)
@@ -74,7 +69,7 @@ for schoolName in schoolNames:
     # Driving distance/time.
     # STARTHERE (update transit, too.)  Search is giving bad results, try to use actual place_id.
     driveResp = gmaps.directions(res['name'] + ', Vancouver, BC Canada',
-                                 'Suite Genius Mt. Pleasant, Vancouver BC Canada',
+                                 'Mangos Lounge, Vancouver BC Canada',
                                  mode='driving',
                                  traffic_model='best_guess',
                                  departure_time=departureEpochTime)
@@ -86,7 +81,8 @@ for schoolName in schoolNames:
       drivingDistance = 'unknown'
       drivingTime = 'unknown'
 
-    print res['name']
+    print res['name'].replace("'", "\\\'"),
+ 
     print transitDistance
     print transitTime
     print drivingDistance
@@ -96,7 +92,7 @@ for schoolName in schoolNames:
     schools.append({
       'coords':          res['geometry']['location'],
       'id':              res['id'],
-      'name':            res['name'],
+      'name':            res['name'].replace("'", "\\\'"),
       'place_id':        res['place_id'],
       'reference':       res['reference'],
       'transitDistance': transitDistance,
@@ -113,4 +109,4 @@ env = Environment(loader=FileSystemLoader('./templates'),
 template = env.get_template('schools-map.html.template')
 
 with open('schools-map.html', 'w') as f:
-  f.write(template.render(schools=schools))
+  f.write(template.render(schools=schools, key=k))
