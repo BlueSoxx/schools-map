@@ -30,6 +30,7 @@ with open(apiKeyFilename) as f:
 with open(schoolsFilename) as f:
   schoolNames = f.read().splitlines()
 
+print "Read " + str(len(schoolNames)) + " school names; processing..."
 schools = []
 
 # Search for schools under Google Maps API.
@@ -60,14 +61,13 @@ for schoolName in schoolNames:
                                  departure_time=departureEpochTime)
     if (len(transResp) > 0):
       tRes = transResp[0]['legs'][0]
-      transitDistance = tRes['distance']['text']
-      transitTime = tRes['duration']['text']
+      transitDistance = tRes['distance']
+      transitTime = tRes['duration']
     else:
-      transitDistance = 'unknown'
-      transitTime = 'unknown'
+      transitDistance = {'text': 'unknown', 'value': '-1'}
+      transitTime = {'text': 'unknown', 'value': '-1'}
 
     # Driving distance/time.
-    # STARTHERE (update transit, too.)  Search is giving bad results, try to use actual place_id.
     driveResp = gmaps.directions(res['name'] + ', Vancouver, BC Canada',
                                  'Mangos Lounge, Vancouver BC Canada',
                                  mode='driving',
@@ -75,11 +75,11 @@ for schoolName in schoolNames:
                                  departure_time=departureEpochTime)
     if (len(driveResp) > 0):
       dRes = driveResp[0]['legs'][0]
-      drivingDistance = dRes['distance']['text']
-      drivingTime = dRes['duration']['text']
+      drivingDistance = dRes['distance']
+      drivingTime = dRes['duration']
     else:
-      drivingDistance = 'unknown'
-      drivingTime = 'unknown'
+      drivingDistance = {'text': 'unknown', 'value': '-1'}
+      drivingTime = {'text': 'unknown', 'value': '-1'}
 
     print res['name'].replace("'", "\\\'"),
  
@@ -90,19 +90,22 @@ for schoolName in schoolNames:
 
     # Write out records for consumption by template.
     schools.append({
-      'coords':          res['geometry']['location'],
-      'id':              res['id'],
-      'name':            res['name'].replace("'", "\\\'"),
-      'place_id':        res['place_id'],
-      'reference':       res['reference'],
-      'transitDistance': transitDistance,
-      'transitTime':     transitTime,
-      'drivingDistance': drivingDistance,
-      'drivingTime':     drivingTime,
+      'coords':            res['geometry']['location'],
+      'id':                res['id'],
+      'name':              res['name'].replace("'","\\\'"),
+      'place_id':          res['place_id'],
+      'reference':         res['reference'],
+      'transitDistance':   transitDistance['text'],
+      'transitDistanceKm': round(float(transitDistance['value']) / 1000.0, 1),
+      'transitTime':       transitTime['text'],
+      'transitTimeM':      int(round(float(transitTime['value']) / 60.0, 0)),
+      'drivingDistance':   drivingDistance['text'],
+      'drivingDistanceKm': round(float(drivingDistance['value']) / 1000.0, 1),
+      'drivingTime':       drivingTime['text'],
+      'drivingTimeM':      int(round(float(drivingTime['value']) / 60.0, 0))
     })
 
-
-# Render map from template via jinja.
+# Render map html from template via jinja.
 pwd = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader('./templates'),
                      trim_blocks=True)
@@ -110,3 +113,37 @@ template = env.get_template('schools-map.html.template')
 
 with open('schools-map.html', 'w') as f:
   f.write(template.render(schools=schools, key=k))
+
+# Write out text report.
+def summaryStr( lst ):
+  "Given list of floats, compile a string summarizing min, max, an avg of its elements."
+  return str(min(lst)) + " / " + str(max(lst)) + " / " + str(round(sum(lst) / len(lst), 1))
+
+
+with open('schools-distances.txt', 'w') as f:
+  f.write("# Travel from schools to Suite Genius, at 3:10pm on a weekday.\n")
+  f.write("# Distances in kilometers, times in minutes.\n")
+  transTimes = []
+  transDists = []
+  driveTimes = []
+  driveDists = []
+  for s in schools:
+    transTimes.append(s['transitTimeM'])
+    transDists.append(s['transitDistanceKm'])
+    driveTimes.append(s['drivingTimeM'])
+    driveDists.append(s['drivingDistanceKm'])
+    f.write("School:                  " + s['name'] + "\n")
+    f.write("Transit/Drive Time:      ")
+    f.write(str(s['transitTimeM']) +  " / " + str(s['drivingTimeM']) + "\n")
+    f.write("Transit/Drive Distance:  ")
+    f.write(str(s['transitDistanceKm']) + " / " + str(s['drivingDistanceKm']) + "\n")
+    f.write("\n")
+
+  f.write("Transit Time Min/Max/Avg:  " + summaryStr(transTimes) + "\n")
+  f.write("Drive Time Min/Max/Avg:    " + summaryStr(driveTimes) + "\n")
+  f.write("\n")
+  f.write("Transit Distance Min/Max/Avg:  " + summaryStr(transDists) + "\n")
+  f.write("Drive Distance Min/Max/Avg:    " + summaryStr(driveDists) + "\n")
+
+print "Done."
+print "Wrote 'schools-map.html' and 'school-distances.txt'."
